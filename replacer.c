@@ -26,10 +26,12 @@ void print_help()
     myexit();
 }
 
+char skip_until(const char *, FILE *);
 char readchar(FILE *f)
 {
     int c = fgetc(f);
     if (c == EOF) myexit();
+    if (c == '%') return skip_until("\r\n", f);
     return c;
 }
 
