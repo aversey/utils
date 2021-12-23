@@ -92,12 +92,21 @@ void work()
     char o = skip_until("$\\", original);
     copy_until_chr(o, translated, result);
     if (o == '\\') {
-        o = copy_until(" \n\t\r{}", original, result);
-        skip(" ", translated);
-        skip_until_chr(o, translated);
-        if (o == '{') {
-            copy_until("}", translated, result);
-            skip_until("}", original);
+        o = readchar(original);
+        fputc(o, result);
+        if (o == '[') {
+            copy_until("]", original, result);
+            skip_until("]", translated);
+        } else if (o == '(') {
+            copy_until(")", original, result);
+            skip_until(")", translated);
+        } else {
+            o = copy_until(" \n\t\r{}", original, result);
+            skip_until_chr(o, translated);
+            if (o == '{') {
+                copy_until("}", translated, result);
+                skip_until("}", original);
+            }
         }
     } else if (o == '$') {
         copy_until("$", original, result);
